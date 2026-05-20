@@ -13,12 +13,15 @@
 // This grounding is what reduces hallucinations.
 
 import { streamText, convertToModelMessages, type UIMessage } from "ai";
+import { groq } from "@ai-sdk/groq";
 import { retrieve } from "@/lib/rag/retrieve";
 
 export const runtime = "nodejs";
 export const maxDuration = 30;
 
-const CHAT_MODEL = "openai/gpt-4o-mini";
+// Groq's free tier serves Llama models extremely fast (~300 tok/s).
+// Get a key with no credit card at https://console.groq.com.
+const CHAT_MODEL = groq("llama-3.3-70b-versatile");
 
 export async function POST(req: Request) {
   const { messages } = (await req.json()) as { messages: UIMessage[] };
